@@ -237,13 +237,15 @@ public class TimeAttackManager : MonoBehaviour
         switch (_currentMode)
         {
             case TimeAttackMode.SpeedRun:
-                CompleteChallenge(true);
+                // 超时 = 未在时限内到达终点 = 失败（原代码误判为成功）。
+                CompleteChallenge(false);
                 break;
             case TimeAttackMode.TargetScore:
                 CompleteChallenge(GameManager.Instance.TotalScore >= _currentConfig.TargetValue);
                 break;
             case TimeAttackMode.Survival:
-                CompleteChallenge(false);
+                // 撑满时限 = 存活成功（原代码误判为失败，与 SpeedRun 方向相反）。
+                CompleteChallenge(true);
                 break;
             case TimeAttackMode.Collection:
                 CompleteChallenge(GameManager.Instance.CoinsCollected >= _currentConfig.TargetValue);
