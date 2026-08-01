@@ -12,9 +12,9 @@ jobs:
     # https://devops.u3dcloud.cn/help/docs/advanced/yaml#%E8%A7%A6%E5%8F%91%E5%B7%A5%E4%BD%9C%E6%B5%81
     runs-on: windows-server-2022-tuanjie-1.2.0-pc-8c-16g
     steps:
-      # 从 Unity Devops Version Control 签出项目 https://devops.u3dcloud.cn/help/docs/advanced/action#actionscheckout-plasticscm
+      # 从 Git 仓库签出项目（本仓库托管在 Gitee，Tuanjie 经 git 克隆，非 PlasticSCM）https://devops.u3dcloud.cn/help/docs/advanced/action#actionscheckout-git
       - name: Check out project repository
-        uses: actions/checkout-plasticscm@v1
+        uses: actions/checkout-git@v1
         with:
           path: tjcloudbuild
 
