@@ -1,0 +1,61 @@
+# =============================================================================
+# 团结云开发 (Tuanjie Cloud) 构建工作流 - Windows (Standalone)
+# 项目: Angry Bots 2 (unity-game-1)
+# 引擎: Tuanjie 2022.3.2t13
+# =============================================================================
+#
+# !! 关于本文件的可靠性 !!（与 build-android.yaml 同）
+#  - 【项目相关值】已从 ProjectSettings 核实，可靠。
+#  - 【结构字段名】基于团结云开发工作流通用约定生成，未必与 Tuanjie runner 确切
+#    schema 一致 -> 字段名以官方「Windows 项目构建 yaml 文件」模板为准，或试跑校准。
+# =============================================================================
+
+name: build-windows
+displayName: 构建 Windows 可执行程序
+
+# ---- 触发条件 ---------------------------------------------------------------
+# push 到 main 自动构建；允许手动触发。
+# 注意：Tuanjie 从远端 clone 仓库后才会执行本工作流。本仓库 ~400MB，
+#       Tuanjie 从 GitHub clone 已验证会超时 -> CI 源应指向 Gitee 镜像。
+triggers:
+  push:
+    branches:
+      - main
+  manual: true
+
+# ---- 引擎版本 ---------------------------------------------------------------
+# 与 ProjectSettings/ProjectVersion.txt 一致，勿改。
+engine:
+  version: 2022.3.2t13
+
+# ---- 构建配置 ---------------------------------------------------------------
+build:
+  platform: StandaloneWindows64     # Windows 64 位独立程序
+  outputPath: Build/Windows         # 构建产物输出目录（.exe + *_Data 文件夹）
+  exportType: exe
+
+  # 参与构建的场景 -- 与 EditorBuildSettings.asset 完全一致，共 6 个，顺序勿改：
+  scenes:
+    - Assets/Scene/start.unity
+    - Assets/Scene/LevelSelect.unity
+    - Assets/Scene/waterfall.unity
+    - Assets/Scene/Forest.unity
+    - Assets/Scene/cave.unity
+    - Assets/Scene/volcanocave.unity
+
+# ---- Windows 平台特定配置（值来自 ProjectSettings.asset）--------------------
+windows:
+  productName: Angry Bots 2
+  applicationIdentifier: com.UnityTechnologies.Angry-Bots-2   # Standalone 标识
+  bundleVersion: "1.0"
+  buildNumber: 0                    # Standalone buildNumber
+  architecture: x64
+
+  # Standalone 无需签名 / SDK 版本。如需自定义图标，已在 ProjectSettings 的
+  # m_BuildTargetPlatformIcons(Standalone) 配置，CI 会读取。
+
+# ---- 构建产物 ---------------------------------------------------------------
+artifacts:
+  - name: windows-exe
+    path: Build/Windows
+    retentionDays: 30
