@@ -53,7 +53,8 @@
 | 引擎 | Unity 2022.3.2t13 |
 | 语言 | C# (.NET Standard 2.1) |
 | 物理引擎 | Box2D (Unity内置) |
-| 触摸插件 | EasyTouch 5.x |
+| 渲染管线 | URP 14.0.8 (Universal Render Pipeline) |
+| 触摸插件 | EasyTouch 5.x + CrossPlatformInput |
 | UI系统 | uGUI (Canvas + RectTransform) |
 | 动画系统 | Animator Controller |
 | 音频系统 | AudioSource + AudioClip |
@@ -164,8 +165,12 @@ Assets/
 │   │   └── LevelSelectUI.cs  # 关卡选择界面
 │   ├── BGM/                  # 音频系统
 │   │   └── AudioManager.cs   # 音频管理器
-│   ├── Common/               # 公共组件
-│   │   ├── EventManager.cs   # 事件分发系统
+│   ├── Common/               # 公共组件（单例管理器）
+│   │   ├── SaveManager.cs    # 存档读写（PlayerPrefs 封装 + 版本迁移）
+│   │   ├── ComboSystem.cs    # 连击系统
+│   │   ├── QuestSystem.cs    # 任务系统
+│   │   ├── TimeAttackManager.cs # 时间挑战
+│   │   ├── PowerUpManager.cs # 道具系统
 │   │   └── ParticleManager.cs # 粒子特效管理
 │   └── DeadComponent/        # 死亡和重生
 │       └── CheckPoint.cs     # 检查点组件
@@ -196,13 +201,11 @@ Assets/
 | waterfall | 第一关：瀑布森林 |
 | cave | 第二关：森林洞穴 |
 | volcanocave | 第三关：洞穴熔洞 |
-| login / register | 登录注册（遗留） |
 
 ## 架构文档
 
-- [架构优化总结](./ArchitectureRefactor.md) - 完整的技术文档，包含所有模块说明
-- [高级架构设计](./AdvancedArchitecture.md) - 架构设计思路和代码示例
-- [重构记录](./REFACTOR_SUMMARY.md) - 重构过程总结
+- [Agent 指南](./AGENTS.md) - AI 协作开发指引
+- [代码审查与修复记录](./CLAUDE_FIX_PROMPT.md) - 问题排查与修复说明
 
 ## 获奖记录
 
