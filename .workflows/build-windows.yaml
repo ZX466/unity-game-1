@@ -12,15 +12,11 @@ jobs:
     # https://devops.u3dcloud.cn/help/docs/advanced/yaml#%E8%A7%A6%E5%8F%91%E5%B7%A5%E4%BD%9C%E6%B5%81
     runs-on: windows-server-2022-tuanjie-1.2.0-pc-8c-16g
     steps:
-      # 从 Git 仓库签出项目（本仓库托管在 Gitee，Tuanjie 经 git 克隆，非 PlasticSCM）https://devops.u3dcloud.cn/help/docs/advanced/action#actionscheckout-git
-      - name: Check out project repository
-        uses: actions/checkout-git@v1
-        with:
-          path: tjcloudbuild
-
-      # 检查签出内容
-      - name: List repository content
-        run: ls -l ./tjcloudbuild
+      # 本项目通过 Tuanjie DevOps「本地工作区」同步到云端构建机，代码已在工作区，无需 checkout。
+      # （远端 checkout 在本环境不可用：runner 取不到 checkout-git action —— 内部仓库
+      # 10.4.144.36:3000 需鉴权；且 runner 无法从 GitHub/Gitee 克隆仓库。）
+      - name: List workspace content
+        run: ls -l .
 
       # 构建 https://devops.u3dcloud.cn/help/docs/advanced/action#actionstj-builder
       - name: Build project
@@ -28,7 +24,7 @@ jobs:
         id: build-action
         with:
           targetPlatform: StandaloneWindows64
-          projectPath: ./tjcloudbuild
+          projectPath: .
 
       # 检查构建结果是否成功生成
       - name: Check build result
