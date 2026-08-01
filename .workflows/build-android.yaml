@@ -1,79 +1,42 @@
-# =============================================================================
-# 团结云开发 (Tuanjie Cloud) 构建工作流 - Android
-# 项目: Angry Bots 2 (unity-game-1)
-# 引擎: Tuanjie 2022.3.2t13
-# =============================================================================
-#
-# !! 关于本文件的可靠性 !!
-#  - 【项目相关值】已从 ProjectSettings/ProjectVersion.txt、ProjectSettings.asset、
-#    EditorBuildSettings.asset 核实，可靠：引擎版本、场景列表、包名、版本号、SDK 版本等。
-#  - 【结构字段名】(triggers / build / android / artifacts 等段的 key) 基于团结云开发
-#    工作流通用约定生成，未必与 Tuanjie runner 的确切 schema 完全一致。
-#    官方提供四种平台模板下载，字段名以官方模板为准。
-#  - 建议二选一：
-#    (1) 下载官方「安卓项目构建 yaml 文件」，把其中的字段名套到本文件的值上；
-#    (2) 直接推上去，按 CI 报错逐字段微调。
-# =============================================================================
+name: Build Android
+# 更多有关构建工作流的信息，请参考 https://devops.u3dcloud.cn/help/docs/advanced/yaml
+# 您也可以访问注释中的其它链接来了解更多关于 云构建 action 的使用方法
 
-name: build-android
-displayName: 构建 Android APK
+# 在提交至代码库时触发云构建任务
+on: [push]
 
-# ---- 触发条件 ---------------------------------------------------------------
-# push 到 main 自动构建；允许手动触发。
-# 注意：Tuanjie 从远端 clone 仓库后才会执行本工作流。本仓库 ~400MB，
-#       Tuanjie 从 GitHub clone 已验证会超时 -> CI 源应指向 Gitee 镜像。
-triggers:
-  push:
-    branches:
-      - main
-  manual: true
+jobs:
+  build:
+    name: Build Android
+    # 为了让工作流可以正常触发，需要指定正确的 runs-on 标签
+    # https://devops.u3dcloud.cn/help/docs/advanced/yaml#%E8%A7%A6%E5%8F%91%E5%B7%A5%E4%BD%9C%E6%B5%81
+    runs-on: windows-server-2022-tuanjie-1.2.0-mobile-8c-16g
+    steps:
+      # 从 Unity Devops Version Control 签出项目 https://devops.u3dcloud.cn/help/docs/advanced/action#actionscheckout-plasticscm
+      - name: Check out project repository
+        uses: actions/checkout-plasticscm@v1
+        with:
+          path: tjcloudbuild
 
-# ---- 引擎版本 ---------------------------------------------------------------
-# 与 ProjectSettings/ProjectVersion.txt 一致，勿改。
-engine:
-  version: 2022.3.2t13
+      # 检查签出内容
+      - name: List repository content
+        run: ls -l ./tjcloudbuild
 
-# ---- 构建配置 ---------------------------------------------------------------
-build:
-  platform: Android
-  outputPath: Build/Android        # 构建产物输出目录
-  exportType: apk                  # 输出 APK（如要导出 Gradle 工程改为 "gradle"）
+      # 构建 https://devops.u3dcloud.cn/help/docs/advanced/action#actionstj-builder
+      - name: Build project
+        uses: actions/tj-builder@v3
+        id: build-action
+        with:
+          targetPlatform: Android
+          projectPath: ./tjcloudbuild
 
-  # 参与构建的场景 —— 与 EditorBuildSettings.asset 完全一致，共 6 个，顺序勿改：
-  scenes:
-    - Assets/Scene/start.unity
-    - Assets/Scene/LevelSelect.unity
-    - Assets/Scene/waterfall.unity
-    - Assets/Scene/Forest.unity
-    - Assets/Scene/cave.unity
-    - Assets/Scene/volcanocave.unity
+      # 检查构建结果是否成功生成
+      - name: Check build result
+        run: ls -l ${{ steps.build-action.outputs.buildsPath }}
 
-# ---- Android 平台特定配置（值均来自 ProjectSettings.asset）------------------
-android:
-  productName: Angry Bots 2
-  applicationIdentifier: com.unity.angrybots2
-  bundleVersion: "1.0"
-  bundleVersionCode: 1             # AndroidBundleVersionCode
-
-  minSdkVersion: 22                # Android 5.1
-  targetSdkVersion: 0              # 0 = 使用引擎默认/最高
-
-  # 脚本后端：Android 推荐 IL2CPP + ARM64（ProjectSettings 当前未显式设置 = 默认 Mono）。
-  # 若 CI 报 ARM64/IL2CPP 相关错误，请先在 Editor 里切到 IL2CPP 并提交 ProjectSettings。
-  scriptingBackend: IL2CPP
-  targetArchitectures:
-    - ARM64
-
-  # 签名：项目当前 androidUseCustomKeystore=0（debug 签名）。
-  # 正式发布前需配置正式 keystore，并把凭证放进 CI 变量，不要硬编码进本文件。
-  useCustomKeystore: false
-  # keystoreName:    $ANDROID_KEYSTORE_NAME     # 通过 CI 环境变量注入
-  # keystorePass:    $ANDROID_KEYSTORE_PASS
-  # keyaliasName:    $ANDROID_KEYALIAS_NAME
-  # keyaliasPass:    $ANDROID_KEYALIAS_PASS
-
-# ---- 构建产物 ---------------------------------------------------------------
-artifacts:
-  - name: android-apk
-    path: Build/Android
-    retentionDays: 30
+      # 上传制品 https://devops.u3dcloud.cn/help/docs/advanced/action#actionstj-upload-artifact
+      - name: Upload artifact
+        uses: actions/tj-upload-artifact@v2
+        with:
+          name: Build-${{ steps.build-action.outputs.buildVersion }}
+          path: ${{ steps.build-action.outputs.buildsPath }}

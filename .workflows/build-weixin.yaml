@@ -1,4 +1,4 @@
-name: Build Windows
+name: Build WeixinMiniGame
 # 更多有关构建工作流的信息，请参考 https://devops.u3dcloud.cn/help/docs/advanced/yaml
 # 您也可以访问注释中的其它链接来了解更多关于 云构建 action 的使用方法
 
@@ -7,10 +7,10 @@ on: [push]
 
 jobs:
   build:
-    name: Build StandaloneWindows64
+    name: Build WeixinMiniGame
     # 为了让工作流可以正常触发，需要指定正确的 runs-on 标签
     # https://devops.u3dcloud.cn/help/docs/advanced/yaml#%E8%A7%A6%E5%8F%91%E5%B7%A5%E4%BD%9C%E6%B5%81
-    runs-on: windows-server-2022-tuanjie-1.2.0-pc-8c-16g
+    runs-on: windows-server-2022-tuanjie-1.2.0-weixinminigame-8c-16g
     steps:
       # 从 Unity Devops Version Control 签出项目 https://devops.u3dcloud.cn/help/docs/advanced/action#actionscheckout-plasticscm
       - name: Check out project repository
@@ -27,7 +27,7 @@ jobs:
         uses: actions/tj-builder@v3
         id: build-action
         with:
-          targetPlatform: StandaloneWindows64
+          targetPlatform: WeixinMiniGame
           projectPath: ./tjcloudbuild
 
       # 检查构建结果是否成功生成
