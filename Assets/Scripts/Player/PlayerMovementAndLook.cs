@@ -29,12 +29,9 @@ public class PlayerMovementAndLook : MonoBehaviour {
 	[Header("Animation")]
 	public Animator playerAnimator;
 
-	private PlayerJoystickRotate _playerJoystickRotate;
-
 	void Awake()
 	{
 		CreatePlayerMovementPlane();
-		_playerJoystickRotate = FindObjectOfType<PlayerJoystickRotate>();
 	}
 
 	void CreatePlayerMovementPlane()
@@ -81,19 +78,8 @@ public class PlayerMovementAndLook : MonoBehaviour {
 	void TurnThePlayer()
 	{
 #if MOBILE_INPUT
-		if (_playerJoystickRotate != null)
-		{
-			Vector3 cursorScreenPosition = _playerJoystickRotate.MapToScreenPosition;
-
-			Vector3 cursorWorldPosition = ScreenPointToWorldPointOnPlane(cursorScreenPosition, playerMovementPlane, mainCamera);
-
-			playerToMouse = cursorWorldPosition - transform.position;
-		}
-		else
-		{
-			playerToMouse.x = CrossPlatformInputManager.GetAxis("Mouse X");
-			playerToMouse.z = CrossPlatformInputManager.GetAxis("Mouse Y");
-		}
+		playerToMouse.x = CrossPlatformInputManager.GetAxis("Mouse X");
+		playerToMouse.z = CrossPlatformInputManager.GetAxis("Mouse Y");
 #else
 		Vector3 cursorScreenPosition = Input.mousePosition;
 
