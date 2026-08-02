@@ -12,21 +12,26 @@ jobs:
     # https://devops.u3dcloud.cn/help/docs/advanced/yaml#%E8%A7%A6%E5%8F%91%E5%B7%A5%E4%BD%9C%E6%B5%81
     runs-on: windows-server-2022-tuanjie-1.2.0-pc-8c-16g
     steps:
-      # 本项目通过 Tuanjie DevOps「本地工作区」同步到云端构建机，代码已在工作区，无需 checkout。
-      # （远端 checkout 在本环境不可用：runner 取不到 checkout-git action —— 内部仓库
-      # 10.4.144.36:3000 需鉴权；且 runner 无法从 GitHub/Gitee 克隆仓库。）
+      # 从 Unity Devops Version Control (Plastic SCM) 签出项目
+      # https://devops.u3dcloud.cn/help/docs/advanced/action#actionscheckout-plasticscm
+      - name: Check out project repository
+        uses: actions/checkout-plasticscm@v1
+        with:
+          path: tjcloudbuild
+
+      # 诊断：确认 Plastic SCM 签出了什么
       - name: List workspace content
         shell: bash
         run: |
           echo "===== WORKSPACE DIAGNOSTIC ====="
           echo "--- pwd ---"
           pwd
-          echo "--- ls -la . (workspace root) ---"
-          ls -la .
-          echo "--- find ProjectVersion.txt anywhere under . ---"
-          find . -name "ProjectVersion.txt" 2>/dev/null || true
-          echo "--- top-level dirs (depth 2) ---"
-          find . -maxdepth 2 -type d 2>/dev/null | head -40 || true
+          echo "--- ls -la ./tjcloudbuild ---"
+          ls -la ./tjcloudbuild
+          echo "--- find ProjectVersion.txt under ./tjcloudbuild ---"
+          find ./tjcloudbuild -name "ProjectVersion.txt" 2>/dev/null || true
+          echo "--- top-level dirs in tjcloudbuild (depth 2) ---"
+          find ./tjcloudbuild -maxdepth 2 -type d 2>/dev/null | head -40 || true
           echo "===== END DIAGNOSTIC ====="
 
       # 构建 https://devops.u3dcloud.cn/help/docs/advanced/action#actionstj-builder
@@ -35,10 +40,11 @@ jobs:
         id: build-action
         with:
           targetPlatform: StandaloneWindows64
-          projectPath: .
+          projectPath: ./tjcloudbuild
 
       # 检查构建结果是否成功生成
       - name: Check build result
+        shell: bash
         run: ls -l ${{ steps.build-action.outputs.buildsPath }}
 
       # 上传制品 https://devops.u3dcloud.cn/help/docs/advanced/action#actionstj-upload-artifact
