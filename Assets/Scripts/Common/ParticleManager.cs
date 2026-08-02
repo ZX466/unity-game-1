@@ -65,7 +65,6 @@ public class ParticleManager : MonoBehaviour
 
     private GameObject _particleContainer;
     private GameObject[] _effectPool;
-    private int _currentPoolIndex = 0;
 
     #endregion
 

@@ -3,8 +3,6 @@ using System.Collections;
 
 public class BGHorizConstentSpeed : MonoBehaviour {
 
-    private float wait = 0.5f;
-    private float rush = 0.5f;
     public float HorzDis;
     public float HorzSpeed;
     private Rigidbody2D _rb;

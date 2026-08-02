@@ -236,7 +236,9 @@ namespace UnityEngine.Rendering.Universal
 
             UpdateReflectionCamera(camera);
 
+#pragma warning disable CS0618 // RenderSingleCamera obsolete in URP; no drop-in replacement for ScriptableRenderPass context
             UniversalRenderPipeline.RenderSingleCamera(context, m_ReflectionCamera);
+#pragma warning restore CS0618
 
             GL.invertCulling = false;
             RenderSettings.fog = true;

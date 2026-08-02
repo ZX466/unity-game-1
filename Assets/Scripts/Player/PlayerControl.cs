@@ -86,7 +86,6 @@ public class PlayerControl : MonoBehaviour
     private Collider2D _collider;
     private LayerMask _groundLayer;
     private float _moveInput;
-    private bool _jumpInput;
     private float _lastYPosition;
 
     private float _lastGroundedTime;
@@ -197,7 +196,6 @@ public class PlayerControl : MonoBehaviour
         else
         {
             _moveInput = 0f;
-            _jumpInput = false;
         }
     }
 

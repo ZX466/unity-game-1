@@ -40,7 +40,6 @@ public class ColorJudge : MonoBehaviour
     private Renderer _blockRenderer;
     private Renderer _bgRenderer;
     private Collider2D _blockCollider;
-    private float _targetAlpha = 1f;
     private float _currentAlpha = 1f;
     private bool _isFading = false;
     private Coroutine _fadeRoutine;
