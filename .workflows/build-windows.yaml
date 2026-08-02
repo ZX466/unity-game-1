@@ -16,7 +16,17 @@ jobs:
       # （远端 checkout 在本环境不可用：runner 取不到 checkout-git action —— 内部仓库
       # 10.4.144.36:3000 需鉴权；且 runner 无法从 GitHub/Gitee 克隆仓库。）
       - name: List workspace content
-        run: ls -l .
+        run: |
+          echo "===== WORKSPACE DIAGNOSTIC ====="
+          echo "--- pwd ---"
+          pwd
+          echo "--- ls -la . (workspace root) ---"
+          ls -la .
+          echo "--- find ProjectVersion.txt anywhere under . ---"
+          find . -name "ProjectVersion.txt" 2>/dev/null || true
+          echo "--- top-level dirs (depth 2) ---"
+          find . -maxdepth 2 -type d 2>/dev/null | head -40 || true
+          echo "===== END DIAGNOSTIC ====="
 
       # 构建 https://devops.u3dcloud.cn/help/docs/advanced/action#actionstj-builder
       - name: Build project
