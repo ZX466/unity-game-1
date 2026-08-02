@@ -16265,7 +16265,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1447267657}
-  - component: {fileID: 1447267659}
   - component: {fileID: 1447267658}
   m_Layer: 0
   m_Name: JumpJudge
@@ -16314,18 +16313,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.2858377, y: 0.21023083}
   m_EdgeRadius: 0
---- !u!114 &1447267659
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114000012598730412, guid: d04136b5a92d4934e8072be404a1d201,
-    type: 2}
-  m_PrefabInternal: {fileID: 491872816}
-  m_GameObject: {fileID: 1447267656}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fcb3b2e369a6a84593d22b0c167bbf1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1459672806
 GameObject:
   m_ObjectHideFlags: 0
@@ -24138,7 +24125,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 2085895243}
-  - component: {fileID: 2085895242}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -24146,17 +24132,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2085895242
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2085895241}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f964ede223487a4bb550d2646c653ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &2085895243
 Transform:
   m_ObjectHideFlags: 0

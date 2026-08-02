@@ -36,7 +36,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4000013230935144}
-  - component: {fileID: 114000012598730412}
   - component: {fileID: 61000013383210696}
   m_Layer: 0
   m_Name: JumpJudge
@@ -648,17 +647,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationSpeed: 1000
---- !u!114 &114000012598730412
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000010499769044}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fcb3b2e369a6a84593d22b0c167bbf1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114000013783794930
 MonoBehaviour:
   m_ObjectHideFlags: 1
