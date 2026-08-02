@@ -13,14 +13,13 @@ jobs:
     runs-on: windows-server-2022-tuanjie-1.2.0-pc-8c-16g
     steps:
       # 从公网 Gitee 克隆项目(内部 Gitea 和 Plastic SCM 都没有项目文件)
-      # 测试云端 runner 能否访问公网 gitee.com
       - name: Check out project repository
         shell: bash
         run: |
           echo "=== Cloning from public Gitee (depth 1) ==="
           git clone --depth 1 https://gitee.com/ZX666X/unity-game-1.git tjcloudbuild 2>&1 || echo "!!! git clone FAILED (exit $?)"
 
-      # 诊断：确认 Plastic SCM 签出了什么
+      # 诊断：确认克隆内容
       - name: List workspace content
         shell: bash
         run: |

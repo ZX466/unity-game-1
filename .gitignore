@@ -28,8 +28,9 @@ sysinfo.txt
 *.apk
 *.unitypackage
 
-# Claude Code local session data (not part of the project)
+# Claude Code / Codex local session data (not part of the project)
 .claude/
+.codex/
 
 # Private numbered ignore configs (PlasticSCM-style, kept local)
 *.private.*
